@@ -3,7 +3,7 @@ services:
   api:
     container_name: pokedex-api
     build:
-      context: ./../
+      context: ../
       dockerfile: docker/Dockerfile
     ports:
       - 8080:8080
@@ -14,6 +14,7 @@ services:
       MONGODB_ADDRS: localhost:27018
       MONGODB_NAME: pokedex-db
   mongodb_pokedex:
+    container_name: pokedex-api-mongo
     image: mongo:latest
     restart: always
     ports:
