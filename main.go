@@ -5,15 +5,16 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/ricardoham/pokedex-api/config"
 )
 
 func main() {
-	fmt.Println("Start")
+	apiConfig := config.GetAPIConfig()
 	echo := echo.New()
 
 	echo.Use(middleware.Logger())
 	echo.Use(middleware.Recover())
 
-	port := fmt.Sprintf(":%d", 8080)
+	port := fmt.Sprintf(":%d", apiConfig.HostPort)
 	echo.Logger.Fatal(echo.Start(port))
 }
