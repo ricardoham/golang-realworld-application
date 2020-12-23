@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"sync"
@@ -34,7 +33,6 @@ func GetAPIConfig() *APIConfig {
 
 func getAPIHostPort() int {
 	apiPort, err := strconv.Atoi(os.Getenv("HOST_PORT"))
-	fmt.Println("Apiport", apiPort)
 	if err != nil {
 		apiPort = 8080
 	}
