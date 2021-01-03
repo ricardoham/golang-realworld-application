@@ -24,6 +24,9 @@ func main() {
 
 	echoGroup := echo.Group("/v1/pokemons")
 	echoGroup.POST("", pokemonHandler.CreatePokemon)
+	echoGroup.GET("", pokemonHandler.GetAllPokemons)
+	echoGroup.PUT("/:id", pokemonHandler.UpdatePokemon)
+	echoGroup.DELETE("", pokemonHandler.DeletePokemon)
 
 	port := fmt.Sprintf(":%d", apiConfig.HostPort)
 	echo.Logger.Fatal(echo.Start(port))
