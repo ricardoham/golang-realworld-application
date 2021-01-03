@@ -16,5 +16,10 @@ func NewPokemonsService(repository *repository.PokemonsRepository) *PokemonServi
 }
 
 func (s *PokemonService) CreatePokemon(pokemon *entity.Pokemon) error {
-	return nil
+	p, err := entity.NewPokemon(pokemon.Name)
+	if err != nil {
+		return err
+	}
+
+	return s.repository.Create(p)
 }

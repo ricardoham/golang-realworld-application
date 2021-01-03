@@ -25,12 +25,12 @@ func NewPokemonsRepository() *PokemonsRepository {
 	}
 }
 
-func (r *PokemonsRepository) Create(e *entity.Pokemon) (string, error) {
+func (r *PokemonsRepository) Create(e *entity.Pokemon) error {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	_, err := coll.InsertOne(context.TODO(), e)
 	if err != nil {
 		log.Fatal("Error on repository", err)
-		return e.ID, err
+		return err
 	}
-	return e.ID, err
+	return err
 }
