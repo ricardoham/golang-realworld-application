@@ -12,7 +12,7 @@ services:
     environment:
       CUR_ENV: dev
       HOST_PORT: 8080
-      MONGODB_ADDRS: localhost:27018
+      MONGODB_ADDRS: localhost:27017
       MONGODB_NAME: pokedex-db
   mongodb_pokedex:
     container_name: pokedex-api-mongo

@@ -41,8 +41,15 @@ func getAPIHostPort() int {
 }
 
 func GetMongoConfig() *MongoConfig {
-	mongoAddress := os.Getenv("MONGODB_ADDRS")
-	mongoDatabaseName := os.Getenv("MONGODB_NAME")
+	var mongoAddress string
+	var mongoDatabaseName string
+	if os.Getenv("CUR_ENV") == "" {
+		mongoAddress = MONGODB_ADDRS
+		mongoDatabaseName = MONGODB_NAME
+	} else {
+		mongoAddress = os.Getenv("MONGODB_ADDRS")
+		mongoDatabaseName = os.Getenv("MONGODB_NAME")
+	}
 	mongoTimeout := 10 * time.Second
 
 	return &MongoConfig{
