@@ -1,18 +1,36 @@
 package handler
 
 import (
-	"github.com/ricardoham/pokedex-api/services"
+	"log"
+	"net/http"
+
+	"github.com/labstack/echo"
+	"github.com/ricardoham/pokedex-api/entity"
+	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
+	usecase "github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
-type PokemonsInterface interface {
-} // TODO
-
 type pokemonsHandler struct {
-	pokemonsService *services.PokemonsService
+	pokemonService *services.PokemonService
 }
 
-func NewPokemonsHandler(services *services.PokemonsService) PokemonsInterface {
+func NewPokemonsHandler(services *services.PokemonService) usecase.UseCase {
 	return &pokemonsHandler{
-		pokemonsService: services,
+		pokemonService: services,
 	}
+}
+
+func (p *pokemonsHandler) CreatePokemon(echo echo.Context) error {
+	var pokemon entity.Pokemon
+	if err := echo.Bind(&pokemon); err != nil {
+		log.Fatal("Error when binding the content ", err)
+		return err
+	}
+
+	err := p.pokemonService.CreatePokemon(&pokemon)
+	if err != nil {
+		log.Fatal("Error ", err)
+	}
+
+	return echo.JSON(http.StatusCreated, "created")
 }

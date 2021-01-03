@@ -1,7 +1,11 @@
 package repository
 
 import (
+	"context"
+	"log"
+
 	"github.com/ricardoham/pokedex-api/config"
+	"github.com/ricardoham/pokedex-api/entity"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -19,4 +23,14 @@ func NewPokemonsRepository() *PokemonsRepository {
 		collection: collection,
 		dbName:     dbName,
 	}
+}
+
+func (r *PokemonsRepository) Create(e *entity.Pokemon) (string, error) {
+	coll := r.client.Database(r.dbName).Collection(r.collection)
+	_, err := coll.InsertOne(context.TODO(), e)
+	if err != nil {
+		log.Fatal("Error on repository", err)
+		return e.ID, err
+	}
+	return e.ID, err
 }

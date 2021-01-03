@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/ricardoham/pokedex-api/services"
-
-	handler "github.com/ricardoham/pokedex-api/api/handler"
-	"github.com/ricardoham/pokedex-api/repository"
-
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/ricardoham/pokedex-api/api/handler"
 	"github.com/ricardoham/pokedex-api/config"
+	repository "github.com/ricardoham/pokedex-api/infrastructure/repository"
+	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
 func main() {
@@ -24,7 +22,8 @@ func main() {
 	pokemonService := services.NewPokemonsService(pokemonRepo)
 	pokemonHandler := handler.NewPokemonsHandler(pokemonService)
 
-	fmt.Println(pokemonHandler) // TODO
+	echoGroup := echo.Group("/v1/pokemons")
+	echoGroup.POST("", pokemonHandler.CreatePokemon)
 
 	port := fmt.Sprintf(":%d", apiConfig.HostPort)
 	echo.Logger.Fatal(echo.Start(port))
