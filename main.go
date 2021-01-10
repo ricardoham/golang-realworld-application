@@ -9,6 +9,7 @@ import (
 	"github.com/ricardoham/pokedex-api/config"
 	repository "github.com/ricardoham/pokedex-api/infrastructure/repository"
 	services "github.com/ricardoham/pokedex-api/usecase/favpokemon"
+	pokeApiService "github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
 func main() {
@@ -18,11 +19,16 @@ func main() {
 	echo.Use(middleware.Logger())
 	echo.Use(middleware.Recover())
 
+	pokeAPIService := pokeApiService.NewPokemonService()
+	pokeAPIHandler := handler.NewPokemonHandler(pokeAPIService)
+
 	pokemonRepo := repository.NewPokemonsRepository()
 	pokemonService := services.NewFavPokemonsService(pokemonRepo)
 	pokemonHandler := handler.NewFavPokemonsHandler(pokemonService)
 
-	echoGroup := echo.Group("/v1/pokemons")
+	echo.GET("/v1/pokemons/*", pokeAPIHandler.GetPokemon)
+
+	echoGroup := echo.Group("/v1/favpokemons")
 	echoGroup.POST("", pokemonHandler.CreateFavPokemon)
 	echoGroup.GET("", pokemonHandler.GetAllFavPokemons)
 	echoGroup.PUT("/:id", pokemonHandler.UpdateFavPokemon)
