@@ -12,23 +12,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type PokemonsRepository struct {
+type FavPokemonsRepository struct {
 	client     *mongo.Client
 	collection string
 	dbName     string
 }
 
-func NewPokemonsRepository() *PokemonsRepository {
+func NewPokemonsRepository() *FavPokemonsRepository {
 	client, dbName := config.MongoConnection()
 	collection := "pokemons"
-	return &PokemonsRepository{
+	return &FavPokemonsRepository{
 		client:     client,
 		collection: collection,
 		dbName:     dbName,
 	}
 }
 
-func (r *PokemonsRepository) Create(e *entity.Pokemon) error {
+func (r *FavPokemonsRepository) Create(e *entity.FavPokemon) error {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	_, err := coll.InsertOne(context.TODO(), e)
 	if err != nil {
@@ -38,12 +38,12 @@ func (r *PokemonsRepository) Create(e *entity.Pokemon) error {
 	return err
 }
 
-func (r *PokemonsRepository) FindAll(ctx context.Context, pokemons []*entity.Pokemon) ([]*entity.Pokemon, error) {
+func (r *FavPokemonsRepository) FindAll(ctx context.Context, pokemons []*entity.FavPokemon) ([]*entity.FavPokemon, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	cursor, err := coll.Find(ctx, bson.M{})
 
 	for cursor.Next(ctx) {
-		var el entity.Pokemon
+		var el entity.FavPokemon
 		err := cursor.Decode(&el)
 		if err != nil {
 			return nil, err
@@ -61,7 +61,7 @@ func (r *PokemonsRepository) FindAll(ctx context.Context, pokemons []*entity.Pok
 	return pokemons, err
 }
 
-func (r *PokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *entity.Pokemon) (*mongo.UpdateResult, error) {
+func (r *FavPokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *entity.FavPokemon) (*mongo.UpdateResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId}
 	update := bson.D{
@@ -78,7 +78,7 @@ func (r *PokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updat
 	return result, nil
 }
 
-func (r *PokemonsRepository) Delete(ctx context.Context, pokeId entity.DeletePokemon) (*mongo.DeleteResult, error) {
+func (r *FavPokemonsRepository) Delete(ctx context.Context, pokeId entity.DeleteFavPokemon) (*mongo.DeleteResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId.ID}
 	result, err := coll.DeleteOne(ctx, filter)

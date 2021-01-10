@@ -22,7 +22,7 @@ func NewFavPokemonsHandler(services *services.FavPokemonService) usecase.UseCase
 }
 
 func (p *favPokemonsHandler) CreateFavPokemon(echo echo.Context) error {
-	var pokemon entity.Pokemon
+	var pokemon entity.FavPokemon
 	if err := echo.Bind(&pokemon); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
@@ -48,7 +48,7 @@ func (p *favPokemonsHandler) GetAllFavPokemons(echo echo.Context) error {
 
 func (p *favPokemonsHandler) UpdateFavPokemon(echo echo.Context) error {
 	pokeId := uuid.MustParse(echo.Param("id"))
-	updatePokemon := new(entity.Pokemon)
+	updatePokemon := new(entity.FavPokemon)
 	if err := echo.Bind(updatePokemon); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
@@ -64,7 +64,7 @@ func (p *favPokemonsHandler) UpdateFavPokemon(echo echo.Context) error {
 }
 
 func (p *favPokemonsHandler) DeleteFavPokemon(echo echo.Context) error {
-	var pokeId entity.DeletePokemon
+	var pokeId entity.DeleteFavPokemon
 	if err := echo.Bind(&pokeId); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err

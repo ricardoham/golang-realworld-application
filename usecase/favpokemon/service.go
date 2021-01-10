@@ -10,17 +10,17 @@ import (
 )
 
 type FavPokemonService struct {
-	repository *repository.PokemonsRepository
+	repository *repository.FavPokemonsRepository
 }
 
-func NewFavPokemonsService(repository *repository.PokemonsRepository) *FavPokemonService {
+func NewFavPokemonsService(repository *repository.FavPokemonsRepository) *FavPokemonService {
 	return &FavPokemonService{
 		repository: repository,
 	}
 }
 
-func (s *FavPokemonService) CreateFavPokemon(pokemon *entity.Pokemon) error {
-	p, err := entity.NewPokemon(pokemon.Name, time.Now())
+func (s *FavPokemonService) CreateFavPokemon(pokemon *entity.FavPokemon) error {
+	p, err := entity.NewFavPokemon(pokemon.Name, time.Now())
 	if err != nil {
 		return err
 	}
@@ -28,8 +28,8 @@ func (s *FavPokemonService) CreateFavPokemon(pokemon *entity.Pokemon) error {
 	return s.repository.Create(p)
 }
 
-func (s *FavPokemonService) GetAllFavPokemons() ([]*entity.Pokemon, error) {
-	var pokemons []*entity.Pokemon
+func (s *FavPokemonService) GetAllFavPokemons() ([]*entity.FavPokemon, error) {
+	var pokemons []*entity.FavPokemon
 	ctx := context.TODO()
 	pokemons, err := s.repository.FindAll(ctx, pokemons)
 
@@ -40,7 +40,7 @@ func (s *FavPokemonService) GetAllFavPokemons() ([]*entity.Pokemon, error) {
 	return pokemons, nil
 }
 
-func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *entity.Pokemon) (int64, error) {
+func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *entity.FavPokemon) (int64, error) {
 	ctx := context.TODO()
 	result, err := s.repository.Update(ctx, pokeId, updateData)
 	if err != nil {
@@ -50,7 +50,7 @@ func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *entit
 	return result.MatchedCount, nil
 }
 
-func (s *FavPokemonService) DeleteFavPokemon(pokeId entity.DeletePokemon) (int64, error) {
+func (s *FavPokemonService) DeleteFavPokemon(pokeId entity.DeleteFavPokemon) (int64, error) {
 	ctx := context.TODO()
 	deleteResult, err := s.repository.Delete(ctx, pokeId)
 	if err != nil {

@@ -8,20 +8,20 @@ import (
 
 type ID = uuid.UUID
 
-type Pokemon struct {
+type FavPokemon struct {
 	ID        string
 	Name      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
-type DeletePokemon struct {
+type DeleteFavPokemon struct {
 	ID string
 }
 
-func NewPokemon(name string, createdAt time.Time) (*Pokemon, error) {
-	p := &Pokemon{
-		ID:        newPokemonId().String(),
+func NewFavPokemon(name string, createdAt time.Time) (*FavPokemon, error) {
+	p := &FavPokemon{
+		ID:        newFavPokemonId().String(),
 		Name:      name,
 		CreatedAt: createdAt,
 	}
@@ -29,6 +29,6 @@ func NewPokemon(name string, createdAt time.Time) (*Pokemon, error) {
 	return p, nil
 }
 
-func newPokemonId() ID {
+func newFavPokemonId() ID {
 	return ID(uuid.New())
 }
