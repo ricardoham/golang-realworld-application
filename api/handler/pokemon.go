@@ -20,11 +20,22 @@ func NewPokemonHandler(service *services.PokemonService) usecase.UseCase {
 }
 
 func (p *pokemonHandler) GetPokemon(echo echo.Context) error {
+	var result interface{}
+	var err error
 	input := echo.Param("*")
-	result, err := p.pokemonService.GetPokemonFromPokeApi(input)
-	if err != nil {
-		log.Fatal("Error during fetch pokemon, ", err)
-		return echo.JSON(http.StatusBadRequest, err)
+
+	if input == "" {
+		result, err = p.pokemonService.GetAllResultPokemonFromPokeApi()
+		if err != nil {
+			log.Fatal("Error during fetch pokemons, ", err)
+			return echo.JSON(http.StatusBadRequest, err)
+		}
+	} else {
+		result, err = p.pokemonService.GetPokemonFromPokeApi(input)
+		if err != nil {
+			log.Fatal("Error during fetch pokemon, ", err)
+			return echo.JSON(http.StatusBadRequest, err)
+		}
 	}
 
 	return echo.JSON(http.StatusOK, result)

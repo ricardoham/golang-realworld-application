@@ -1,14 +1,13 @@
 package pokemon
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
 
-	"github.com/ricardoham/pokedex-api/entity"
+	"github.com/ricardoham/pokedex-api/api/presenter"
 )
 
 type PokemonService struct {
@@ -23,17 +22,39 @@ func NewPokemonService() *PokemonService {
 	}
 }
 
-func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) ([]*entity.Pokemon, error) {
-	var pokemonResult []*entity.Pokemon
+func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Pokemon, error) {
+	var pokemonResult *presenter.Pokemon
 
-	dataMarshlead, err := json.Marshal(map[string]interface{}{})
+	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", pokemon))
 	if err != nil {
 		return nil, err
 	}
+
+	if err = json.Unmarshal(bodyResult, &pokemonResult); err != nil {
+		return nil, err
+	}
+	return pokemonResult, nil
+}
+
+func (p *PokemonService) GetAllResultPokemonFromPokeApi() (*presenter.Result, error) {
+	var pokemonResult *presenter.Result
+
+	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/"))
+	if err != nil {
+		return nil, err
+	}
+
+	if err = json.Unmarshal(bodyResult, &pokemonResult); err != nil {
+		return nil, err
+	}
+	return pokemonResult, nil
+}
+
+func (p *PokemonService) doRequest(url string) ([]byte, error) {
 	req, err := http.NewRequest(
 		"GET",
-		fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", pokemon),
-		bytes.NewBuffer(dataMarshlead))
+		url,
+		nil)
 	if err != nil {
 		return nil, err
 	}
@@ -46,14 +67,9 @@ func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) ([]*entity.Pokemo
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
-
 	if err != nil {
 		return nil, err
 	}
 
-	if err = json.Unmarshal(body, &pokemonResult); err != nil {
-		return nil, err
-	}
-
-	return pokemonResult, nil
+	return body, err
 }
