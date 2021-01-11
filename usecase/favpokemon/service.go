@@ -39,8 +39,8 @@ func (s *FavPokemonService) CreateFavPokemon(pokemon *presenter.SaveFavPokemon) 
 	return s.repository.Create(p)
 }
 
-func (s *FavPokemonService) GetAllFavPokemons() ([]*entity.FavPokemon, error) {
-	var pokemons []*entity.FavPokemon
+func (s *FavPokemonService) GetAllFavPokemons() ([]*presenter.FavPokemon, error) {
+	var pokemons []*presenter.FavPokemon
 	ctx := context.TODO()
 	pokemons, err := s.repository.FindAll(ctx, pokemons)
 
@@ -51,7 +51,7 @@ func (s *FavPokemonService) GetAllFavPokemons() ([]*entity.FavPokemon, error) {
 	return pokemons, nil
 }
 
-func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *entity.FavPokemon) (int64, error) {
+func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *presenter.FavPokemon) (int64, error) {
 	ctx := context.TODO()
 	result, err := s.repository.Update(ctx, pokeId, updateData)
 	if err != nil {
@@ -61,7 +61,7 @@ func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *entit
 	return result.MatchedCount, nil
 }
 
-func (s *FavPokemonService) DeleteFavPokemon(pokeId entity.DeleteFavPokemon) (int64, error) {
+func (s *FavPokemonService) DeleteFavPokemon(pokeId presenter.DeleteFavPokemon) (int64, error) {
 	ctx := context.TODO()
 	deleteResult, err := s.repository.Delete(ctx, pokeId)
 	if err != nil {

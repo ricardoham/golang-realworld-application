@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"github.com/ricardoham/pokedex-api/api/presenter"
-	"github.com/ricardoham/pokedex-api/entity"
 	services "github.com/ricardoham/pokedex-api/usecase/favpokemon"
 	usecase "github.com/ricardoham/pokedex-api/usecase/favpokemon"
 )
@@ -49,7 +48,7 @@ func (p *favPokemonsHandler) GetAllFavPokemons(echo echo.Context) error {
 
 func (p *favPokemonsHandler) UpdateFavPokemon(echo echo.Context) error {
 	pokeId := uuid.MustParse(echo.Param("id"))
-	updatePokemon := new(entity.FavPokemon)
+	updatePokemon := new(presenter.FavPokemon)
 	if err := echo.Bind(updatePokemon); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
@@ -65,7 +64,7 @@ func (p *favPokemonsHandler) UpdateFavPokemon(echo echo.Context) error {
 }
 
 func (p *favPokemonsHandler) DeleteFavPokemon(echo echo.Context) error {
-	var pokeId entity.DeleteFavPokemon
+	var pokeId presenter.DeleteFavPokemon
 	if err := echo.Bind(&pokeId); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
