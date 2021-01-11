@@ -23,7 +23,7 @@ func main() {
 	pokeAPIHandler := handler.NewPokemonHandler(pokeAPIService)
 
 	pokemonRepo := repository.NewPokemonsRepository()
-	pokemonService := services.NewFavPokemonsService(pokemonRepo)
+	pokemonService := services.NewFavPokemonsService(pokemonRepo, pokeAPIService)
 	pokemonHandler := handler.NewFavPokemonsHandler(pokemonService)
 
 	echo.GET("/v1/pokemons/*", pokeAPIHandler.GetPokemon)

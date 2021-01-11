@@ -1,8 +1,13 @@
 package presenter
 
 type Pokemon struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID     int            `json:"id"`
+	Name   string         `json:"name"`
+	Sprite PokemonSprites `json:"sprites"`
+}
+
+type PokemonSprites struct {
+	Front string `json:"front_default"`
 }
 
 type Result struct {

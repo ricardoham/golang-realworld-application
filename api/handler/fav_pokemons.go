@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
+	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/entity"
 	services "github.com/ricardoham/pokedex-api/usecase/favpokemon"
 	usecase "github.com/ricardoham/pokedex-api/usecase/favpokemon"
@@ -22,7 +23,7 @@ func NewFavPokemonsHandler(services *services.FavPokemonService) usecase.UseCase
 }
 
 func (p *favPokemonsHandler) CreateFavPokemon(echo echo.Context) error {
-	var pokemon entity.FavPokemon
+	var pokemon presenter.SaveFavPokemon
 	if err := echo.Bind(&pokemon); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
