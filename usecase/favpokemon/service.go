@@ -7,18 +7,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/entity"
-	repository "github.com/ricardoham/pokedex-api/infrastructure/repository"
-	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
+	"github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
 type FavPokemonService struct {
-	repository     *repository.FavPokemonsRepository
-	pokeAPIService *services.PokemonService
+	repository     Repository
+	pokeAPIService pokemon.Pokemon
 }
 
 func NewFavPokemonsService(
-	repository *repository.FavPokemonsRepository,
-	pokeAPIService *services.PokemonService) *FavPokemonService {
+	repository Repository,
+	pokeAPIService pokemon.Pokemon) *FavPokemonService {
 	return &FavPokemonService{
 		repository:     repository,
 		pokeAPIService: pokeAPIService,

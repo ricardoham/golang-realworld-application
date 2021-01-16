@@ -1,5 +1,7 @@
 package repository
 
+//go:generate mockgen -destination=infrastructure/repository/mocks/fav_pokemons.go -package=mock_repository github.com/ricardoham/pokedex-api/infrastructure/repository FavPokemonsRepository
+
 import (
 	"context"
 	"log"
