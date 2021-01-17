@@ -11,12 +11,12 @@ import (
 )
 
 type PokemonService struct {
-	http.Client
+	*http.Client
 }
 
 func NewPokemonService() *PokemonService {
 	return &PokemonService{
-		Client: http.Client{
+		Client: &http.Client{
 			Timeout: time.Second,
 		},
 	}
