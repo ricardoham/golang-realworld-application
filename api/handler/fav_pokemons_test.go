@@ -32,10 +32,11 @@ func TestFavPokemonsHandler(t *testing.T) {
 	echoContext := echo.NewContext(r, w)
 
 	myTest := []struct {
-		inputName     string
-		handler       handler
-		args          args
-		expectedError bool
+		inputName       string
+		handler         handler
+		args            args
+		expectedError   bool
+		excpectedOutput int
 	}{
 		{
 			inputName: "Should return 200 when CreateFavPokemon",
@@ -47,7 +48,8 @@ func TestFavPokemonsHandler(t *testing.T) {
 					pokemonService: pokemonService,
 				}
 			}(),
-			expectedError: false,
+			expectedError:   false,
+			excpectedOutput: http.StatusCreated,
 		},
 	}
 	for _, tt := range myTest {
@@ -59,6 +61,9 @@ func TestFavPokemonsHandler(t *testing.T) {
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Error on test %v", err)
 				return
+			}
+			if tt.excpectedOutput != w.Code {
+				t.Errorf("Unexpected error in the request %v - wants %v", w.Code, tt.excpectedOutput)
 			}
 		})
 	}
