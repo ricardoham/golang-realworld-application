@@ -12,7 +12,7 @@ import (
 )
 
 type favPokemonsHandler struct {
-	pokemonService *services.FavPokemonService
+	pokemonService services.FavPokemon
 }
 
 func NewFavPokemonsHandler(services *services.FavPokemonService) usecase.UseCase {
