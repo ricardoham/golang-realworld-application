@@ -2,6 +2,7 @@ package cache
 
 import (
 	"log"
+	"time"
 
 	"github.com/go-redis/redis"
 )
@@ -29,6 +30,22 @@ func (c *Cache) Get(key string) (string, error) {
 
 	log.Println("Key Value, ", cacherKey)
 	return cacherKey, nil
+}
+
+func (c *Cache) Set(key string, value string, expiresOn int) (bool, error) {
+	err := c.redisClient.Set(key, value, time.Duration(expiresOn)*time.Second).Err()
+
+	return true, err
+}
+
+func (c *Cache) Delete(key string) error {
+	err := c.redisClient.Del(key).Err()
+	if err == redis.Nil {
+		log.Fatal("The key may not exist, ", err)
+		return err
+	}
+
+	return err
 }
 
 func (c *Cache) Ping() (string, error) {
