@@ -8,5 +8,9 @@ services:
       - 27017:27017
     volumes:
     - mongodb_pokedex_container:/data/db
+  redis_pokedex:
+    image: redis:latest
+    ports: 
+      - 6379:6379
 volumes:
   mongodb_pokedex_container:
