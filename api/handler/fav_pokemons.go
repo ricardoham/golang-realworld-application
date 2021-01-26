@@ -30,7 +30,8 @@ func (p *favPokemonsHandler) CreateFavPokemon(echo echo.Context) error {
 
 	err := p.pokemonService.CreateFavPokemon(&pokemon)
 	if err != nil {
-		log.Fatal("Error ", err)
+		log.Println("Error ", err)
+		return echo.JSON(http.StatusBadRequest, "Couldn't create FavPokemon")
 	}
 
 	return echo.JSON(http.StatusCreated, "created")

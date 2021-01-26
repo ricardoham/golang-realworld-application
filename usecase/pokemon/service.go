@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/ricardoham/pokedex-api/api/presenter"
@@ -34,7 +35,7 @@ func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Pokem
 		return pokemonResult, nil
 	}
 
-	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", pokemon))
+	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", strings.ToLower(pokemon)))
 	if err != nil {
 		return nil, err
 	}
