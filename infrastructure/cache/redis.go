@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 
@@ -17,23 +18,28 @@ func NewRedisCache(redisClientConfig *redis.Client) *Cache {
 	}
 }
 
-func (c *Cache) Get(key string) (string, error) {
-	cacherKey, err := c.redisClient.Get(key).Result()
-	if err != nil {
-		return "", err
-	}
-
+func (c *Cache) Get(key string, data interface{}) error {
+	serialize, err := c.redisClient.Get(key).Result()
 	if err == redis.Nil {
-		log.Fatal("The key may not exist, ", err)
-		return "", err
+		log.Println("The key may not exist, ", err)
+		return err
 	}
 
-	log.Println("Key Value, ", cacherKey)
-	return cacherKey, nil
+	err = json.Unmarshal([]byte(serialize), &data)
+	if err != nil {
+		return err
+	}
+
+	log.Println("Key Value, ", data)
+	return nil
 }
 
-func (c *Cache) Set(key string, value string, expiresOn int) (bool, error) {
-	err := c.redisClient.Set(key, value, time.Duration(expiresOn)*time.Second).Err()
+func (c *Cache) Set(key string, value interface{}, expiresOn int) (bool, error) {
+	serialize, err := json.Marshal(value)
+	if err != nil {
+		log.Println("Failed to set new cache on Redis", err)
+	}
+	err = c.redisClient.Set(key, string(serialize), time.Duration(expiresOn)*time.Second).Err()
 
 	return true, err
 }
@@ -41,7 +47,7 @@ func (c *Cache) Set(key string, value string, expiresOn int) (bool, error) {
 func (c *Cache) Delete(key string) error {
 	err := c.redisClient.Del(key).Err()
 	if err == redis.Nil {
-		log.Fatal("The key may not exist, ", err)
+		log.Println("The key may not exist, ", err)
 		return err
 	}
 
