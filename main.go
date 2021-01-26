@@ -32,7 +32,7 @@ func main() {
 
 	cache := cache.NewRedisCache(redisClientConfig)
 
-	pokeAPIService := pokeApiService.NewPokemonService()
+	pokeAPIService := pokeApiService.NewPokemonService(cache)
 	pokeAPIHandler := handler.NewPokemonHandler(pokeAPIService)
 
 	pokemonRepo := repository.NewPokemonsRepository()
