@@ -43,6 +43,18 @@ func (s *FavPokemonService) CreateFavPokemon(pokemon *presenter.SaveFavPokemon) 
 	return s.repository.Create(p)
 }
 
+func (s *FavPokemonService) GetFavPokemon(pokeId uuid.UUID) (*presenter.FavPokemon, error) {
+	var pokemon *presenter.FavPokemon
+	ctx := context.TODO()
+
+	err := s.repository.FindOne(ctx, pokeId, pokemon)
+	if err != nil {
+		return nil, err
+	}
+
+	return pokemon, nil
+}
+
 func (s *FavPokemonService) GetAllFavPokemons() ([]*presenter.FavPokemon, error) {
 	var pokemons []*presenter.FavPokemon
 	ctx := context.TODO()

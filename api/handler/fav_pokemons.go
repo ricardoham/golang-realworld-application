@@ -37,6 +37,18 @@ func (p *favPokemonsHandler) CreateFavPokemon(echo echo.Context) error {
 	return echo.JSON(http.StatusCreated, "created")
 }
 
+func (p *favPokemonsHandler) GetFavPokemon(echo echo.Context) error {
+	pokeID := uuid.MustParse(echo.Param("id"))
+
+	result, err := p.pokemonService.GetFavPokemon(pokeID)
+	if err != nil {
+		log.Println("Error during fetch data ", err)
+		return echo.JSON(http.StatusBadRequest, "error during fetch data")
+	}
+
+	return echo.JSON(http.StatusOK, result)
+}
+
 func (p *favPokemonsHandler) GetAllFavPokemons(echo echo.Context) error {
 	pokemons, err := p.pokemonService.GetAllFavPokemons()
 	if err != nil {

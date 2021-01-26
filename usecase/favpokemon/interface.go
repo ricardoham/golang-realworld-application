@@ -11,6 +11,7 @@ import (
 
 type FavPokemon interface {
 	CreateFavPokemon(pokemon *presenter.SaveFavPokemon) error
+	GetFavPokemon(pokeId uuid.UUID) (*presenter.FavPokemon, error)
 	GetAllFavPokemons() ([]*presenter.FavPokemon, error)
 	UpdateFavPokemon(pokeId uuid.UUID, updateData *presenter.FavPokemon) (int64, error)
 	DeleteFavPokemon(pokeId presenter.DeleteFavPokemon) (int64, error)
@@ -18,6 +19,7 @@ type FavPokemon interface {
 
 type UseCase interface {
 	CreateFavPokemon(echo echo.Context) error
+	GetFavPokemon(echo echo.Context) error
 	GetAllFavPokemons(echo echo.Context) error
 	UpdateFavPokemon(echo echo.Context) error
 	DeleteFavPokemon(echo echo.Context) error
@@ -26,6 +28,7 @@ type UseCase interface {
 type Repository interface {
 	Create(e *presenter.FavPokemon) error
 	FindAll(ctx context.Context, pokemons []*presenter.FavPokemon) ([]*presenter.FavPokemon, error)
+	FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.FavPokemon) error
 	Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.FavPokemon) (*mongo.UpdateResult, error)
 	Delete(ctx context.Context, pokeId presenter.DeleteFavPokemon) (*mongo.DeleteResult, error)
 }

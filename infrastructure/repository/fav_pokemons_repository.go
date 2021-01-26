@@ -61,6 +61,17 @@ func (r *FavPokemonsRepository) FindAll(ctx context.Context, pokemons []*present
 	return pokemons, err
 }
 
+func (r *FavPokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.FavPokemon) error {
+	coll := r.client.Database(r.dbName).Collection(r.collection)
+	filter := bson.M{"id": pokeId}
+	err := coll.FindOne(ctx, filter).Decode(&pokemon)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *FavPokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.FavPokemon) (*mongo.UpdateResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId}

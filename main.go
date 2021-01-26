@@ -43,6 +43,7 @@ func main() {
 
 	echoGroup := echo.Group("/v1/favpokemons")
 	echoGroup.POST("", pokemonHandler.CreateFavPokemon)
+	echoGroup.GET("/:id", pokemonHandler.GetFavPokemon)
 	echoGroup.GET("", pokemonHandler.GetAllFavPokemons)
 	echoGroup.PUT("/:id", pokemonHandler.UpdateFavPokemon)
 	echoGroup.DELETE("", pokemonHandler.DeleteFavPokemon)
