@@ -1,4 +1,4 @@
-package pokemon
+package client
 
 import (
 	"encoding/json"
@@ -27,8 +27,8 @@ func NewPokemonService(cache *cache.Cache) *PokemonService {
 	}
 }
 
-func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Pokemon, error) {
-	var pokemonResult *presenter.Pokemon
+func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.ClientPokemon, error) {
+	var pokemonResult *presenter.ClientPokemon
 
 	err := p.cache.Get("pokeApi", &pokemonResult)
 	if err == nil {

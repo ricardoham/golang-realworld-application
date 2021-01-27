@@ -71,6 +71,29 @@ func (_m *FavPokemon) GetAllFavPokemons() ([]*presenter.FavPokemon, error) {
 	return r0, r1
 }
 
+// GetFavPokemon provides a mock function with given fields: pokeId
+func (_m *FavPokemon) GetFavPokemon(pokeId uuid.UUID) (*presenter.FavPokemon, error) {
+	ret := _m.Called(pokeId)
+
+	var r0 *presenter.FavPokemon
+	if rf, ok := ret.Get(0).(func(uuid.UUID) *presenter.FavPokemon); ok {
+		r0 = rf(pokeId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*presenter.FavPokemon)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uuid.UUID) error); ok {
+		r1 = rf(pokeId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // UpdateFavPokemon provides a mock function with given fields: pokeId, updateData
 func (_m *FavPokemon) UpdateFavPokemon(pokeId uuid.UUID, updateData *presenter.FavPokemon) (int64, error) {
 	ret := _m.Called(pokeId, updateData)

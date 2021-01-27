@@ -1,4 +1,4 @@
-package pokemon
+package client
 
 import (
 	"github.com/labstack/echo"
@@ -9,7 +9,7 @@ type UseCase interface {
 	GetPokemon(echo echo.Context) error
 }
 
-type Pokemon interface {
-	GetPokemonFromPokeApi(pokemon string) (*presenter.Pokemon, error)
+type ClientPokemon interface {
+	GetPokemonFromPokeApi(pokemon string) (*presenter.ClientPokemon, error)
 	GetAllResultPokemonFromPokeApi() (*presenter.Result, error)
 }

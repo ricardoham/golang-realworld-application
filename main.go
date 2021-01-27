@@ -13,8 +13,8 @@ import (
 	"github.com/ricardoham/pokedex-api/api/handler"
 	"github.com/ricardoham/pokedex-api/config"
 	repository "github.com/ricardoham/pokedex-api/infrastructure/repository"
+	pokeApiService "github.com/ricardoham/pokedex-api/usecase/client"
 	services "github.com/ricardoham/pokedex-api/usecase/favpokemon"
-	pokeApiService "github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
 func main() {
@@ -33,20 +33,20 @@ func main() {
 	cache := cache.NewRedisCache(redisClientConfig)
 
 	pokeAPIService := pokeApiService.NewPokemonService(cache)
-	pokeAPIHandler := handler.NewPokemonHandler(pokeAPIService)
+	pokeAPIHandler := handler.NewClientPokemonHandler(pokeAPIService)
 
 	pokemonRepo := repository.NewPokemonsRepository()
 	pokemonService := services.NewFavPokemonsService(pokemonRepo, cache, pokeAPIService)
-	pokemonHandler := handler.NewFavPokemonsHandler(pokemonService)
+	clientPokemonHandler := handler.NewFavPokemonsHandler(pokemonService)
 
 	echo.GET("/v1/pokemons/*", pokeAPIHandler.GetPokemon)
 
 	echoGroup := echo.Group("/v1/favpokemons")
-	echoGroup.POST("", pokemonHandler.CreateFavPokemon)
-	echoGroup.GET("/:id", pokemonHandler.GetFavPokemon)
-	echoGroup.GET("", pokemonHandler.GetAllFavPokemons)
-	echoGroup.PUT("/:id", pokemonHandler.UpdateFavPokemon)
-	echoGroup.DELETE("", pokemonHandler.DeleteFavPokemon)
+	echoGroup.POST("", clientPokemonHandler.CreateFavPokemon)
+	echoGroup.GET("/:id", clientPokemonHandler.GetFavPokemon)
+	echoGroup.GET("", clientPokemonHandler.GetAllFavPokemons)
+	echoGroup.PUT("/:id", clientPokemonHandler.UpdateFavPokemon)
+	echoGroup.DELETE("", clientPokemonHandler.DeleteFavPokemon)
 
 	port := fmt.Sprintf(":%d", apiConfig.HostPort)
 	echo.Logger.Fatal(echo.Start(port))

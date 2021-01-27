@@ -1,4 +1,4 @@
-package pokemon
+package client
 
 import (
 	"net/http"
@@ -18,7 +18,7 @@ func TestPokemonService(t *testing.T) {
 		pokemon string
 	}
 
-	pokemonMock := &presenter.Pokemon{
+	pokemonMock := &presenter.ClientPokemon{
 		ID:   1,
 		Name: "bulbasaur",
 		Sprite: presenter.PokemonSprites{
@@ -31,7 +31,7 @@ func TestPokemonService(t *testing.T) {
 		service        service
 		args           args
 		expectedError  bool
-		expectedOutput *presenter.Pokemon
+		expectedOutput *presenter.ClientPokemon
 	}{
 		{
 			inputName: "Should return a pokemon as result of GetPokemonFromPokeApi",

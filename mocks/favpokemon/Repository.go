@@ -79,6 +79,20 @@ func (_m *Repository) FindAll(ctx context.Context, pokemons []*presenter.FavPoke
 	return r0, r1
 }
 
+// FindOne provides a mock function with given fields: ctx, pokeId, pokemon
+func (_m *Repository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.FavPokemon) error {
+	ret := _m.Called(ctx, pokeId, pokemon)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, *presenter.FavPokemon) error); ok {
+		r0 = rf(ctx, pokeId, pokemon)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Update provides a mock function with given fields: ctx, pokeId, updateData
 func (_m *Repository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.FavPokemon) (*mongo.UpdateResult, error) {
 	ret := _m.Called(ctx, pokeId, updateData)

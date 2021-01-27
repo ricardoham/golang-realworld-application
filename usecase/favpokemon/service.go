@@ -9,19 +9,19 @@ import (
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/entity"
 	"github.com/ricardoham/pokedex-api/infrastructure/cache"
-	"github.com/ricardoham/pokedex-api/usecase/pokemon"
+	"github.com/ricardoham/pokedex-api/usecase/client"
 )
 
 type FavPokemonService struct {
 	repository     Repository
-	pokeAPIService pokemon.Pokemon
+	pokeAPIService client.ClientPokemon
 	cache          *cache.Cache
 }
 
 func NewFavPokemonsService(
 	repository Repository,
 	cache *cache.Cache,
-	pokeAPIService pokemon.Pokemon) *FavPokemonService {
+	pokeAPIService client.ClientPokemon) *FavPokemonService {
 	return &FavPokemonService{
 		repository:     repository,
 		pokeAPIService: pokeAPIService,

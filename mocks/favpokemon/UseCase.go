@@ -55,6 +55,20 @@ func (_m *UseCase) GetAllFavPokemons(_a0 echo.Context) error {
 	return r0
 }
 
+// GetFavPokemon provides a mock function with given fields: _a0
+func (_m *UseCase) GetFavPokemon(_a0 echo.Context) error {
+	ret := _m.Called(_a0)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(echo.Context) error); ok {
+		r0 = rf(_a0)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // UpdateFavPokemon provides a mock function with given fields: _a0
 func (_m *UseCase) UpdateFavPokemon(_a0 echo.Context) error {
 	ret := _m.Called(_a0)

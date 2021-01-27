@@ -5,21 +5,21 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
-	usecase "github.com/ricardoham/pokedex-api/usecase/pokemon"
+	services "github.com/ricardoham/pokedex-api/usecase/client"
+	usecase "github.com/ricardoham/pokedex-api/usecase/client"
 )
 
-type pokemonHandler struct {
+type clientPokemonHandler struct {
 	pokemonService *services.PokemonService
 }
 
-func NewPokemonHandler(service *services.PokemonService) usecase.UseCase {
-	return &pokemonHandler{
+func NewClientPokemonHandler(service *services.PokemonService) usecase.UseCase {
+	return &clientPokemonHandler{
 		pokemonService: service,
 	}
 }
 
-func (p *pokemonHandler) GetPokemon(echo echo.Context) error {
+func (p *clientPokemonHandler) GetPokemon(echo echo.Context) error {
 	var result interface{}
 	var err error
 	input := echo.Param("*")

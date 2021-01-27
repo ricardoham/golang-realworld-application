@@ -1,6 +1,6 @@
 package presenter
 
-type Pokemon struct {
+type ClientPokemon struct {
 	ID     int            `json:"id"`
 	Name   string         `json:"name"`
 	Sprite PokemonSprites `json:"sprites"`

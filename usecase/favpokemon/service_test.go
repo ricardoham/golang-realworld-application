@@ -5,18 +5,18 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
+	mockClient "github.com/ricardoham/pokedex-api/mocks/client"
 	mockFavpokemon "github.com/ricardoham/pokedex-api/mocks/favpokemon"
-	mockPokemon "github.com/ricardoham/pokedex-api/mocks/pokemon"
 
 	"github.com/ricardoham/pokedex-api/api/presenter"
-	"github.com/ricardoham/pokedex-api/usecase/pokemon"
+	"github.com/ricardoham/pokedex-api/usecase/client"
 )
 
 // Basesd on TDT(Table Driven Tests)
 func TestFavPokemonService(t *testing.T) {
 	type service struct {
 		repository     Repository
-		pokeAPIService pokemon.Pokemon
+		pokeAPIService client.ClientPokemon
 	}
 
 	type args struct {
@@ -32,7 +32,7 @@ func TestFavPokemonService(t *testing.T) {
 		{
 			inputName: "Should Return Create Pokemon when CreateFavPokemon",
 			service: func() service {
-				pokemonMock := &presenter.Pokemon{
+				pokemonMock := &presenter.ClientPokemon{
 					ID:   1,
 					Name: "bulbasaur",
 					Sprite: presenter.PokemonSprites{
@@ -40,7 +40,7 @@ func TestFavPokemonService(t *testing.T) {
 					},
 				}
 				repository := &mockFavpokemon.Repository{}
-				pokeAPIService := &mockPokemon.Pokemon{}
+				pokeAPIService := &mockClient.ClientPokemon{}
 
 				pokeAPIService.On("GetPokemonFromPokeApi", mock.Anything).Return(pokemonMock, nil)
 				repository.On("Create", mock.Anything).Return(nil)
