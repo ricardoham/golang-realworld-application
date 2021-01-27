@@ -6,22 +6,22 @@ import (
 	"strings"
 	"testing"
 
-	mocks "github.com/ricardoham/pokedex-api/mocks/favpokemon"
+	mocks "github.com/ricardoham/pokedex-api/mocks/pokemon"
 	"github.com/stretchr/testify/mock"
 
 	"github.com/labstack/echo"
 
 	"github.com/ricardoham/pokedex-api/api/presenter"
-	services "github.com/ricardoham/pokedex-api/usecase/favpokemon"
+	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
 )
 
-func TestFavPokemonsHandler(t *testing.T) {
+func TestPokemonsHandler(t *testing.T) {
 	type handler struct {
-		pokemonService services.FavPokemon
+		pokemonService services.Pokemon
 	}
 
 	type args struct {
-		pokemon presenter.SaveFavPokemon
+		pokemon presenter.SavePokemon
 	}
 	body := strings.NewReader(`{"name": "Pikachu", "customName": "Test"}`)
 	r := httptest.NewRequest(http.MethodPost, "http://localhost:8080", body)
@@ -39,10 +39,10 @@ func TestFavPokemonsHandler(t *testing.T) {
 		excpectedOutput int
 	}{
 		{
-			inputName: "Should return 200 when CreateFavPokemon",
+			inputName: "Should return 200 when CreatePokemon",
 			handler: func() handler {
-				pokemonService := &mocks.FavPokemon{}
-				pokemonService.On("CreateFavPokemon", mock.Anything).Return(nil)
+				pokemonService := &mocks.Pokemon{}
+				pokemonService.On("CreatePokemon", mock.Anything).Return(nil)
 
 				return handler{
 					pokemonService: pokemonService,
@@ -54,10 +54,10 @@ func TestFavPokemonsHandler(t *testing.T) {
 	}
 	for _, tt := range myTest {
 		t.Run(tt.inputName, func(t *testing.T) {
-			p := favPokemonsHandler{
+			p := pokemonsHandler{
 				pokemonService: tt.handler.pokemonService,
 			}
-			err := p.CreateFavPokemon(echoContext)
+			err := p.CreatePokemon(echoContext)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Error on test %v", err)
 				return

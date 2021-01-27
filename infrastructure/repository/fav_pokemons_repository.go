@@ -12,23 +12,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type FavPokemonsRepository struct {
+type PokemonsRepository struct {
 	client     *mongo.Client
 	collection string
 	dbName     string
 }
 
-func NewPokemonsRepository() *FavPokemonsRepository {
+func NewPokemonsRepository() *PokemonsRepository {
 	client, dbName := config.MongoConnection()
 	collection := "pokemons"
-	return &FavPokemonsRepository{
+	return &PokemonsRepository{
 		client:     client,
 		collection: collection,
 		dbName:     dbName,
 	}
 }
 
-func (r *FavPokemonsRepository) Create(e *presenter.FavPokemon) error {
+func (r *PokemonsRepository) Create(e *presenter.Pokemon) error {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	_, err := coll.InsertOne(context.TODO(), e)
 	if err != nil {
@@ -38,12 +38,12 @@ func (r *FavPokemonsRepository) Create(e *presenter.FavPokemon) error {
 	return err
 }
 
-func (r *FavPokemonsRepository) FindAll(ctx context.Context, pokemons []*presenter.FavPokemon) ([]*presenter.FavPokemon, error) {
+func (r *PokemonsRepository) FindAll(ctx context.Context, pokemons []*presenter.Pokemon) ([]*presenter.Pokemon, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	cursor, err := coll.Find(ctx, bson.M{})
 
 	for cursor.Next(ctx) {
-		var el presenter.FavPokemon
+		var el presenter.Pokemon
 		err := cursor.Decode(&el)
 		if err != nil {
 			return nil, err
@@ -61,7 +61,7 @@ func (r *FavPokemonsRepository) FindAll(ctx context.Context, pokemons []*present
 	return pokemons, err
 }
 
-func (r *FavPokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.FavPokemon) error {
+func (r *PokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.Pokemon) error {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId}
 	err := coll.FindOne(ctx, filter).Decode(&pokemon)
@@ -72,7 +72,7 @@ func (r *FavPokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, p
 	return nil
 }
 
-func (r *FavPokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.FavPokemon) (*mongo.UpdateResult, error) {
+func (r *PokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.Pokemon) (*mongo.UpdateResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId}
 	update := bson.D{
@@ -89,7 +89,7 @@ func (r *FavPokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, up
 	return result, nil
 }
 
-func (r *FavPokemonsRepository) Delete(ctx context.Context, pokeId presenter.DeleteFavPokemon) (*mongo.DeleteResult, error) {
+func (r *PokemonsRepository) Delete(ctx context.Context, pokeId presenter.DeletePokemon) (*mongo.DeleteResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeId.ID}
 	result, err := coll.DeleteOne(ctx, filter)

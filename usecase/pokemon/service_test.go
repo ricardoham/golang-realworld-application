@@ -1,4 +1,4 @@
-package favpokemon
+package pokemon
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	mockClient "github.com/ricardoham/pokedex-api/mocks/client"
-	mockFavpokemon "github.com/ricardoham/pokedex-api/mocks/favpokemon"
+	mockPokemon "github.com/ricardoham/pokedex-api/mocks/pokemon"
 
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/usecase/client"
@@ -20,7 +20,7 @@ func TestFavPokemonService(t *testing.T) {
 	}
 
 	type args struct {
-		pokemon *presenter.SaveFavPokemon
+		pokemon *presenter.SavePokemon
 	}
 
 	myTest := []struct {
@@ -39,7 +39,7 @@ func TestFavPokemonService(t *testing.T) {
 						Front: "test",
 					},
 				}
-				repository := &mockFavpokemon.Repository{}
+				repository := &mockPokemon.Repository{}
 				pokeAPIService := &mockClient.ClientPokemon{}
 
 				pokeAPIService.On("GetPokemonFromPokeApi", mock.Anything).Return(pokemonMock, nil)
@@ -51,7 +51,7 @@ func TestFavPokemonService(t *testing.T) {
 				}
 			}(),
 			args: args{
-				pokemon: &presenter.SaveFavPokemon{
+				pokemon: &presenter.SavePokemon{
 					Name:       "Bulbasaur",
 					CustomName: "Test",
 				},
@@ -61,11 +61,11 @@ func TestFavPokemonService(t *testing.T) {
 	}
 	for _, tt := range myTest {
 		t.Run(tt.inputName, func(t *testing.T) {
-			p := FavPokemonService{
+			p := PokemonService{
 				repository:     tt.service.repository,
 				pokeAPIService: tt.service.pokeAPIService,
 			}
-			err := p.CreateFavPokemon(tt.args.pokemon)
+			err := p.CreatePokemon(tt.args.pokemon)
 			if (err != nil) != tt.expectedError {
 				t.Errorf("Error on test %v", err)
 				return

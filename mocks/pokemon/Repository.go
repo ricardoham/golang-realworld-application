@@ -6,7 +6,6 @@ import (
 	context "context"
 
 	mock "github.com/stretchr/testify/mock"
-
 	mongo "go.mongodb.org/mongo-driver/mongo"
 
 	presenter "github.com/ricardoham/pokedex-api/api/presenter"
@@ -20,11 +19,11 @@ type Repository struct {
 }
 
 // Create provides a mock function with given fields: e
-func (_m *Repository) Create(e *presenter.FavPokemon) error {
+func (_m *Repository) Create(e *presenter.Pokemon) error {
 	ret := _m.Called(e)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*presenter.FavPokemon) error); ok {
+	if rf, ok := ret.Get(0).(func(*presenter.Pokemon) error); ok {
 		r0 = rf(e)
 	} else {
 		r0 = ret.Error(0)
@@ -34,11 +33,11 @@ func (_m *Repository) Create(e *presenter.FavPokemon) error {
 }
 
 // Delete provides a mock function with given fields: ctx, pokeId
-func (_m *Repository) Delete(ctx context.Context, pokeId presenter.DeleteFavPokemon) (*mongo.DeleteResult, error) {
+func (_m *Repository) Delete(ctx context.Context, pokeId presenter.DeletePokemon) (*mongo.DeleteResult, error) {
 	ret := _m.Called(ctx, pokeId)
 
 	var r0 *mongo.DeleteResult
-	if rf, ok := ret.Get(0).(func(context.Context, presenter.DeleteFavPokemon) *mongo.DeleteResult); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, presenter.DeletePokemon) *mongo.DeleteResult); ok {
 		r0 = rf(ctx, pokeId)
 	} else {
 		if ret.Get(0) != nil {
@@ -47,7 +46,7 @@ func (_m *Repository) Delete(ctx context.Context, pokeId presenter.DeleteFavPoke
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, presenter.DeleteFavPokemon) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, presenter.DeletePokemon) error); ok {
 		r1 = rf(ctx, pokeId)
 	} else {
 		r1 = ret.Error(1)
@@ -57,20 +56,20 @@ func (_m *Repository) Delete(ctx context.Context, pokeId presenter.DeleteFavPoke
 }
 
 // FindAll provides a mock function with given fields: ctx, pokemons
-func (_m *Repository) FindAll(ctx context.Context, pokemons []*presenter.FavPokemon) ([]*presenter.FavPokemon, error) {
+func (_m *Repository) FindAll(ctx context.Context, pokemons []*presenter.Pokemon) ([]*presenter.Pokemon, error) {
 	ret := _m.Called(ctx, pokemons)
 
-	var r0 []*presenter.FavPokemon
-	if rf, ok := ret.Get(0).(func(context.Context, []*presenter.FavPokemon) []*presenter.FavPokemon); ok {
+	var r0 []*presenter.Pokemon
+	if rf, ok := ret.Get(0).(func(context.Context, []*presenter.Pokemon) []*presenter.Pokemon); ok {
 		r0 = rf(ctx, pokemons)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]*presenter.FavPokemon)
+			r0 = ret.Get(0).([]*presenter.Pokemon)
 		}
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, []*presenter.FavPokemon) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, []*presenter.Pokemon) error); ok {
 		r1 = rf(ctx, pokemons)
 	} else {
 		r1 = ret.Error(1)
@@ -79,13 +78,13 @@ func (_m *Repository) FindAll(ctx context.Context, pokemons []*presenter.FavPoke
 	return r0, r1
 }
 
-// FindOne provides a mock function with given fields: ctx, pokeId, pokemon
-func (_m *Repository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.FavPokemon) error {
-	ret := _m.Called(ctx, pokeId, pokemon)
+// FindOne provides a mock function with given fields: ctx, pokeId, _a2
+func (_m *Repository) FindOne(ctx context.Context, pokeId uuid.UUID, _a2 *presenter.Pokemon) error {
+	ret := _m.Called(ctx, pokeId, _a2)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, *presenter.FavPokemon) error); ok {
-		r0 = rf(ctx, pokeId, pokemon)
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, *presenter.Pokemon) error); ok {
+		r0 = rf(ctx, pokeId, _a2)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -94,11 +93,11 @@ func (_m *Repository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *pr
 }
 
 // Update provides a mock function with given fields: ctx, pokeId, updateData
-func (_m *Repository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.FavPokemon) (*mongo.UpdateResult, error) {
+func (_m *Repository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.Pokemon) (*mongo.UpdateResult, error) {
 	ret := _m.Called(ctx, pokeId, updateData)
 
 	var r0 *mongo.UpdateResult
-	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, *presenter.FavPokemon) *mongo.UpdateResult); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, *presenter.Pokemon) *mongo.UpdateResult); ok {
 		r0 = rf(ctx, pokeId, updateData)
 	} else {
 		if ret.Get(0) != nil {
@@ -107,7 +106,7 @@ func (_m *Repository) Update(ctx context.Context, pokeId uuid.UUID, updateData *
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID, *presenter.FavPokemon) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID, *presenter.Pokemon) error); ok {
 		r1 = rf(ctx, pokeId, updateData)
 	} else {
 		r1 = ret.Error(1)

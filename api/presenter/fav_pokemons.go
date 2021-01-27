@@ -2,7 +2,7 @@ package presenter
 
 import "time"
 
-type FavPokemon struct {
+type Pokemon struct {
 	ID          string         `json:"id" bson:"id"`
 	Name        string         `json:"name" bson:"name"`
 	OrderNumber int            `json:"orderNumber" bson:"orderNumber"`
@@ -12,11 +12,11 @@ type FavPokemon struct {
 	UpdatedAt   time.Time      `json:"updatedAt,omitempty" bson:"updatedAt,omitempty"`
 }
 
-type SaveFavPokemon struct {
+type SavePokemon struct {
 	Name       string `json:"name" bson:"name"`
 	CustomName string `json:"customName" bson:"customName"`
 }
 
-type DeleteFavPokemon struct {
+type DeletePokemon struct {
 	ID string `json:"id" bson:"id"`
 }

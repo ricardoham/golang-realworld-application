@@ -1,4 +1,4 @@
-package favpokemon
+package pokemon
 
 import (
 	"context"
@@ -12,24 +12,24 @@ import (
 	"github.com/ricardoham/pokedex-api/usecase/client"
 )
 
-type FavPokemonService struct {
+type PokemonService struct {
 	repository     Repository
 	pokeAPIService client.ClientPokemon
 	cache          *cache.Cache
 }
 
-func NewFavPokemonsService(
+func NewPokemonsService(
 	repository Repository,
 	cache *cache.Cache,
-	pokeAPIService client.ClientPokemon) *FavPokemonService {
-	return &FavPokemonService{
+	pokeAPIService client.ClientPokemon) *PokemonService {
+	return &PokemonService{
 		repository:     repository,
 		pokeAPIService: pokeAPIService,
 		cache:          cache,
 	}
 }
 
-func (s *FavPokemonService) CreateFavPokemon(pokemon *presenter.SaveFavPokemon) error {
+func (s *PokemonService) CreatePokemon(pokemon *presenter.SavePokemon) error {
 	r, err := s.pokeAPIService.GetPokemonFromPokeApi(pokemon.Name)
 	if err != nil {
 		return err
@@ -43,8 +43,8 @@ func (s *FavPokemonService) CreateFavPokemon(pokemon *presenter.SaveFavPokemon) 
 	return s.repository.Create(p)
 }
 
-func (s *FavPokemonService) GetFavPokemon(pokeId uuid.UUID) (*presenter.FavPokemon, error) {
-	var pokemon *presenter.FavPokemon
+func (s *PokemonService) GetPokemon(pokeId uuid.UUID) (*presenter.Pokemon, error) {
+	var pokemon *presenter.Pokemon
 	ctx := context.TODO()
 
 	err := s.repository.FindOne(ctx, pokeId, pokemon)
@@ -55,8 +55,8 @@ func (s *FavPokemonService) GetFavPokemon(pokeId uuid.UUID) (*presenter.FavPokem
 	return pokemon, nil
 }
 
-func (s *FavPokemonService) GetAllFavPokemons() ([]*presenter.FavPokemon, error) {
-	var pokemons []*presenter.FavPokemon
+func (s *PokemonService) GetAllPokemons() ([]*presenter.Pokemon, error) {
+	var pokemons []*presenter.Pokemon
 	ctx := context.TODO()
 
 	err := s.cache.Get("favPokemon", &pokemons)
@@ -81,7 +81,7 @@ func (s *FavPokemonService) GetAllFavPokemons() ([]*presenter.FavPokemon, error)
 	return pokemons, nil
 }
 
-func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *presenter.FavPokemon) (int64, error) {
+func (s *PokemonService) UpdatePokemon(pokeId uuid.UUID, updateData *presenter.Pokemon) (int64, error) {
 	ctx := context.TODO()
 	result, err := s.repository.Update(ctx, pokeId, updateData)
 	if err != nil {
@@ -91,7 +91,7 @@ func (s *FavPokemonService) UpdateFavPokemon(pokeId uuid.UUID, updateData *prese
 	return result.MatchedCount, nil
 }
 
-func (s *FavPokemonService) DeleteFavPokemon(pokeId presenter.DeleteFavPokemon) (int64, error) {
+func (s *PokemonService) DeletePokemon(pokeId presenter.DeletePokemon) (int64, error) {
 	ctx := context.TODO()
 	deleteResult, err := s.repository.Delete(ctx, pokeId)
 	if err != nil {

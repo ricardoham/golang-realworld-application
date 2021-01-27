@@ -4,7 +4,6 @@ package mocks
 
 import (
 	echo "github.com/labstack/echo"
-
 	mock "github.com/stretchr/testify/mock"
 )
 
