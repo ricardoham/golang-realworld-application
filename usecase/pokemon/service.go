@@ -35,7 +35,7 @@ func (s *PokemonService) CreatePokemon(pokemon *presenter.SavePokemon) error {
 		return err
 	}
 
-	p, err := entity.NewFavPokemon(pokemon.Name, pokemon.CustomName, r.ID, r.Sprite, time.Now())
+	p, err := entity.NewPokemon(pokemon.Name, pokemon.CustomName, r.ID, r.Sprite, time.Now())
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func (s *PokemonService) GetAllPokemons() ([]*presenter.Pokemon, error) {
 	var pokemons []*presenter.Pokemon
 	ctx := context.TODO()
 
-	err := s.cache.Get("favPokemon", &pokemons)
+	err := s.cache.Get("pokemon", &pokemons)
 	if err == nil {
 		return pokemons, nil
 	}
@@ -69,7 +69,7 @@ func (s *PokemonService) GetAllPokemons() ([]*presenter.Pokemon, error) {
 		return nil, err
 	}
 
-	isSetted, err := s.cache.Set("favPokemon", pokemons, 320)
+	isSetted, err := s.cache.Set("pokemon", pokemons, 320)
 	if err != nil {
 		log.Println("Failed to set new cache on Redis", err)
 		return pokemons, nil

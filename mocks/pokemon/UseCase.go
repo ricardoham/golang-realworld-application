@@ -12,8 +12,8 @@ type UseCase struct {
 	mock.Mock
 }
 
-// CreateFavPokemon provides a mock function with given fields: _a0
-func (_m *UseCase) CreateFavPokemon(_a0 echo.Context) error {
+// CreatePokemon provides a mock function with given fields: _a0
+func (_m *UseCase) CreatePokemon(_a0 echo.Context) error {
 	ret := _m.Called(_a0)
 
 	var r0 error
@@ -26,8 +26,8 @@ func (_m *UseCase) CreateFavPokemon(_a0 echo.Context) error {
 	return r0
 }
 
-// DeleteFavPokemon provides a mock function with given fields: _a0
-func (_m *UseCase) DeleteFavPokemon(_a0 echo.Context) error {
+// DeletePokemon provides a mock function with given fields: _a0
+func (_m *UseCase) DeletePokemon(_a0 echo.Context) error {
 	ret := _m.Called(_a0)
 
 	var r0 error
@@ -40,8 +40,8 @@ func (_m *UseCase) DeleteFavPokemon(_a0 echo.Context) error {
 	return r0
 }
 
-// GetAllFavPokemons provides a mock function with given fields: _a0
-func (_m *UseCase) GetAllFavPokemons(_a0 echo.Context) error {
+// GetAllPokemons provides a mock function with given fields: _a0
+func (_m *UseCase) GetAllPokemons(_a0 echo.Context) error {
 	ret := _m.Called(_a0)
 
 	var r0 error
@@ -54,8 +54,8 @@ func (_m *UseCase) GetAllFavPokemons(_a0 echo.Context) error {
 	return r0
 }
 
-// GetFavPokemon provides a mock function with given fields: _a0
-func (_m *UseCase) GetFavPokemon(_a0 echo.Context) error {
+// GetPokemon provides a mock function with given fields: _a0
+func (_m *UseCase) GetPokemon(_a0 echo.Context) error {
 	ret := _m.Called(_a0)
 
 	var r0 error
@@ -68,8 +68,8 @@ func (_m *UseCase) GetFavPokemon(_a0 echo.Context) error {
 	return r0
 }
 
-// UpdateFavPokemon provides a mock function with given fields: _a0
-func (_m *UseCase) UpdateFavPokemon(_a0 echo.Context) error {
+// UpdatePokemon provides a mock function with given fields: _a0
+func (_m *UseCase) UpdatePokemon(_a0 echo.Context) error {
 	ret := _m.Called(_a0)
 
 	var r0 error

@@ -10,9 +10,9 @@ import (
 
 type ID = uuid.UUID
 
-func NewFavPokemon(name string, customName string, orderNumber int, sprite presenter.PokemonSprites, createdAt time.Time) (*presenter.Pokemon, error) {
+func NewPokemon(name string, customName string, orderNumber int, sprite presenter.PokemonSprites, createdAt time.Time) (*presenter.Pokemon, error) {
 	p := &presenter.Pokemon{
-		ID:          newFavPokemonId().String(),
+		ID:          newPokemonId().String(),
 		Name:        name,
 		CustomName:  customName,
 		OrderNumber: orderNumber,
@@ -23,6 +23,6 @@ func NewFavPokemon(name string, customName string, orderNumber int, sprite prese
 	return p, nil
 }
 
-func newFavPokemonId() ID {
+func newPokemonId() ID {
 	return ID(uuid.New())
 }

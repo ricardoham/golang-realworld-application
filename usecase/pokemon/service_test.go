@@ -13,7 +13,7 @@ import (
 )
 
 // Basesd on TDT(Table Driven Tests)
-func TestFavPokemonService(t *testing.T) {
+func TestPokemonService(t *testing.T) {
 	type service struct {
 		repository     Repository
 		pokeAPIService client.ClientPokemon
@@ -30,7 +30,7 @@ func TestFavPokemonService(t *testing.T) {
 		expectedError bool
 	}{
 		{
-			inputName: "Should Return Create Pokemon when CreateFavPokemon",
+			inputName: "Should Return Create Pokemon when CreatePokemon",
 			service: func() service {
 				pokemonMock := &presenter.ClientPokemon{
 					ID:   1,
