@@ -5,7 +5,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/entity"
 	"github.com/ricardoham/pokedex-api/infrastructure/cache"
@@ -35,7 +34,7 @@ func (s *PokemonService) CreatePokemon(pokemon *presenter.SavePokemon) error {
 		return err
 	}
 
-	p, err := entity.NewPokemon(pokemon.Name, pokemon.CustomName, r.ID, r.Sprite, time.Now())
+	p, err := entity.NewPokemon(pokemon.Name, pokemon.CustomName, pokemon.Favorite, r.ID, r.Sprite, time.Now())
 	if err != nil {
 		return err
 	}
@@ -43,13 +42,13 @@ func (s *PokemonService) CreatePokemon(pokemon *presenter.SavePokemon) error {
 	return s.repository.Create(p)
 }
 
-func (s *PokemonService) GetPokemon(pokeId uuid.UUID) (*presenter.Pokemon, error) {
-	var pokemon *presenter.Pokemon
+func (s *PokemonService) GetPokemon(pokeID string) (presenter.Pokemon, error) {
+	var pokemon presenter.Pokemon
 	ctx := context.TODO()
 
-	err := s.repository.FindOne(ctx, pokeId, pokemon)
+	err := s.repository.FindOne(ctx, pokeID, &pokemon)
 	if err != nil {
-		return nil, err
+		return pokemon, err
 	}
 
 	return pokemon, nil
@@ -81,9 +80,9 @@ func (s *PokemonService) GetAllPokemons() ([]*presenter.Pokemon, error) {
 	return pokemons, nil
 }
 
-func (s *PokemonService) UpdatePokemon(pokeId uuid.UUID, updateData *presenter.Pokemon) (int64, error) {
+func (s *PokemonService) UpdatePokemon(pokeID string, updateData *presenter.UpdatePokemon) (int64, error) {
 	ctx := context.TODO()
-	result, err := s.repository.Update(ctx, pokeId, updateData)
+	result, err := s.repository.Update(ctx, pokeID, updateData)
 	if err != nil {
 		return 0, err
 	}
@@ -91,9 +90,9 @@ func (s *PokemonService) UpdatePokemon(pokeId uuid.UUID, updateData *presenter.P
 	return result.MatchedCount, nil
 }
 
-func (s *PokemonService) DeletePokemon(pokeId presenter.DeletePokemon) (int64, error) {
+func (s *PokemonService) DeletePokemon(pokeID presenter.DeletePokemon) (int64, error) {
 	ctx := context.TODO()
-	deleteResult, err := s.repository.Delete(ctx, pokeId)
+	deleteResult, err := s.repository.Delete(ctx, pokeID)
 	if err != nil {
 		return 0, err
 	}

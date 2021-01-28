@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	services "github.com/ricardoham/pokedex-api/usecase/pokemon"
@@ -38,7 +37,7 @@ func (p *pokemonsHandler) CreatePokemon(echo echo.Context) error {
 }
 
 func (p *pokemonsHandler) GetPokemon(echo echo.Context) error {
-	pokeID := uuid.MustParse(echo.Param("id"))
+	pokeID := echo.Param("id")
 
 	result, err := p.pokemonService.GetPokemon(pokeID)
 	if err != nil {
@@ -60,14 +59,14 @@ func (p *pokemonsHandler) GetAllPokemons(echo echo.Context) error {
 }
 
 func (p *pokemonsHandler) UpdatePokemon(echo echo.Context) error {
-	pokeId := uuid.MustParse(echo.Param("id"))
-	updatePokemon := new(presenter.Pokemon)
+	pokeID := echo.Param("id")
+	updatePokemon := new(presenter.UpdatePokemon)
 	if err := echo.Bind(updatePokemon); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
 	}
 
-	result, err := p.pokemonService.UpdatePokemon(pokeId, updatePokemon)
+	result, err := p.pokemonService.UpdatePokemon(pokeID, updatePokemon)
 	if err != nil {
 		log.Fatal("Error when update data ", err)
 		return echo.NoContent(http.StatusBadRequest)
@@ -77,13 +76,13 @@ func (p *pokemonsHandler) UpdatePokemon(echo echo.Context) error {
 }
 
 func (p *pokemonsHandler) DeletePokemon(echo echo.Context) error {
-	var pokeId presenter.DeletePokemon
-	if err := echo.Bind(&pokeId); err != nil {
+	var pokeID presenter.DeletePokemon
+	if err := echo.Bind(&pokeID); err != nil {
 		log.Fatal("Error when binding the content ", err)
 		return err
 	}
 
-	result, err := p.pokemonService.DeletePokemon(pokeId)
+	result, err := p.pokemonService.DeletePokemon(pokeID)
 	if err != nil {
 		log.Fatal("Error when deleting data ", err)
 		return echo.NoContent(http.StatusBadRequest)

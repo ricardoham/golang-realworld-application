@@ -5,7 +5,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/config"
 	"go.mongodb.org/mongo-driver/bson"
@@ -61,9 +60,9 @@ func (r *PokemonsRepository) FindAll(ctx context.Context, pokemons []*presenter.
 	return pokemons, err
 }
 
-func (r *PokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.Pokemon) error {
+func (r *PokemonsRepository) FindOne(ctx context.Context, pokeID string, pokemon *presenter.Pokemon) error {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
-	filter := bson.M{"id": pokeId}
+	filter := bson.M{"id": pokeID}
 	err := coll.FindOne(ctx, filter).Decode(&pokemon)
 	if err != nil {
 		return err
@@ -72,13 +71,14 @@ func (r *PokemonsRepository) FindOne(ctx context.Context, pokeId uuid.UUID, poke
 	return nil
 }
 
-func (r *PokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.Pokemon) (*mongo.UpdateResult, error) {
+func (r *PokemonsRepository) Update(ctx context.Context, pokeID string, updateData *presenter.UpdatePokemon) (*mongo.UpdateResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
-	filter := bson.M{"id": pokeId}
+	filter := bson.M{"id": pokeID}
 	update := bson.D{
 		{"$set", bson.M{
-			"name":      updateData.Name,
-			"updatedAt": time.Now(),
+			"customName": updateData.CustomName,
+			"favorite":   updateData.Favorite,
+			"updatedAt":  time.Now(),
 		}},
 	}
 	result, err := coll.UpdateOne(ctx, filter, update)
@@ -89,9 +89,9 @@ func (r *PokemonsRepository) Update(ctx context.Context, pokeId uuid.UUID, updat
 	return result, nil
 }
 
-func (r *PokemonsRepository) Delete(ctx context.Context, pokeId presenter.DeletePokemon) (*mongo.DeleteResult, error) {
+func (r *PokemonsRepository) Delete(ctx context.Context, pokeID presenter.DeletePokemon) (*mongo.DeleteResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
-	filter := bson.M{"id": pokeId.ID}
+	filter := bson.M{"id": pokeID.ID}
 	result, err := coll.DeleteOne(ctx, filter)
 	if err != nil {
 		return nil, err

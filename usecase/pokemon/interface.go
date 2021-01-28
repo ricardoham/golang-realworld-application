@@ -3,7 +3,6 @@ package pokemon
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,10 +10,10 @@ import (
 
 type Pokemon interface {
 	CreatePokemon(pokemon *presenter.SavePokemon) error
-	GetPokemon(pokeId uuid.UUID) (*presenter.Pokemon, error)
+	GetPokemon(pokeID string) (presenter.Pokemon, error)
 	GetAllPokemons() ([]*presenter.Pokemon, error)
-	UpdatePokemon(pokeId uuid.UUID, updateData *presenter.Pokemon) (int64, error)
-	DeletePokemon(pokeId presenter.DeletePokemon) (int64, error)
+	UpdatePokemon(pokeID string, updateData *presenter.UpdatePokemon) (int64, error)
+	DeletePokemon(pokeID presenter.DeletePokemon) (int64, error)
 }
 
 type UseCase interface {
@@ -28,7 +27,7 @@ type UseCase interface {
 type Repository interface {
 	Create(e *presenter.Pokemon) error
 	FindAll(ctx context.Context, pokemons []*presenter.Pokemon) ([]*presenter.Pokemon, error)
-	FindOne(ctx context.Context, pokeId uuid.UUID, pokemon *presenter.Pokemon) error
-	Update(ctx context.Context, pokeId uuid.UUID, updateData *presenter.Pokemon) (*mongo.UpdateResult, error)
-	Delete(ctx context.Context, pokeId presenter.DeletePokemon) (*mongo.DeleteResult, error)
+	FindOne(ctx context.Context, pokeID string, pokemon *presenter.Pokemon) error
+	Update(ctx context.Context, pokeID string, updateData *presenter.UpdatePokemon) (*mongo.UpdateResult, error)
+	Delete(ctx context.Context, pokeID presenter.DeletePokemon) (*mongo.DeleteResult, error)
 }

@@ -10,11 +10,18 @@ import (
 
 type ID = uuid.UUID
 
-func NewPokemon(name string, customName string, orderNumber int, sprite presenter.PokemonSprites, createdAt time.Time) (*presenter.Pokemon, error) {
+func NewPokemon(
+	name string,
+	customName string,
+	isFavorite bool,
+	orderNumber int,
+	sprite presenter.PokemonSprites,
+	createdAt time.Time) (*presenter.Pokemon, error) {
 	p := &presenter.Pokemon{
 		ID:          newPokemonId().String(),
 		Name:        name,
 		CustomName:  customName,
+		Favorite:    isFavorite,
 		OrderNumber: orderNumber,
 		Sprite:      sprite,
 		CreatedAt:   createdAt,
