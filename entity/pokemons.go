@@ -33,3 +33,19 @@ func NewPokemon(
 func newPokemonId() ID {
 	return ID(uuid.New())
 }
+
+// func UpdatePokemon(customName string, isFavorite bool) *presenter.UpdatePokemon {
+// 	u := &presenter.UpdatePokemon{
+// 		CustomName: customName,
+// 		Favorite:   isFavorite,
+// 	}
+
+// 	if customName == "" {
+// 		return u
+// 	}
+
+// 	return &presenter.UpdatePokemon{
+// 		CustomName: customName,
+// 		Favorite:   isFavorite,
+// 	}
+// }

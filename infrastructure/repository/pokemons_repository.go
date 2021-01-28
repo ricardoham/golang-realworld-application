@@ -8,6 +8,7 @@ import (
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/config"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -74,12 +75,22 @@ func (r *PokemonsRepository) FindOne(ctx context.Context, pokeID string, pokemon
 func (r *PokemonsRepository) Update(ctx context.Context, pokeID string, updateData *presenter.UpdatePokemon) (*mongo.UpdateResult, error) {
 	coll := r.client.Database(r.dbName).Collection(r.collection)
 	filter := bson.M{"id": pokeID}
-	update := bson.D{
-		{"$set", bson.M{
-			"customName": updateData.CustomName,
-			"favorite":   updateData.Favorite,
-			"updatedAt":  time.Now(),
-		}},
+	var update primitive.D
+	if updateData.CustomName != nil {
+		update = bson.D{
+			{"$set", bson.M{
+				"customName": updateData.CustomName,
+				"favorite":   updateData.Favorite,
+				"updatedAt":  time.Now(),
+			}},
+		}
+	} else {
+		update = bson.D{
+			{"$set", bson.M{
+				"favorite":  updateData.Favorite,
+				"updatedAt": time.Now(),
+			}},
+		}
 	}
 	result, err := coll.UpdateOne(ctx, filter, update)
 	if err != nil {

@@ -15,13 +15,13 @@ type Pokemon struct {
 
 type SavePokemon struct {
 	Name       string `json:"name" bson:"name"`
-	CustomName string `json:"customName" bson:"customName"`
+	CustomName string `json:"customName,omitempty" bson:"customName,omitempty"`
 	Favorite   bool   `json:"favorite" bson:"favorite"`
 }
 
 type UpdatePokemon struct {
-	CustomName string `json:"customName" bson:"customName"`
-	Favorite   bool   `json:"favorite" bson:"favorite"`
+	CustomName *string `json:"customName,omitempty" bson:"customName,omitempty"`
+	Favorite   bool    `json:"favorite" bson:"favorite"`
 }
 
 type DeletePokemon struct {
