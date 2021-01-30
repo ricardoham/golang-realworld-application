@@ -6,12 +6,17 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/go-redis/redis"
 	"github.com/ricardoham/pokedex-api/api/presenter"
+	"github.com/ricardoham/pokedex-api/infrastructure/cache"
+	mocks "github.com/ricardoham/pokedex-api/mocks/redis"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestPokemonService(t *testing.T) {
 	type service struct {
 		client *http.Client
+		cache  cache.Redis
 	}
 
 	type args struct {
@@ -41,8 +46,13 @@ func TestPokemonService(t *testing.T) {
 					w.WriteHeader(200)
 					w.Write([]byte(want))
 				}))
+				cache := &mocks.Redis{}
+
+				cache.On("Get", mock.Anything, mock.Anything).Return(redis.Nil)
+				cache.On("Set", mock.Anything, mock.Anything, mock.Anything).Return(true, nil)
 				return service{
 					client: httpServer.Client(),
+					cache:  cache,
 				}
 			}(),
 			args: args{
@@ -56,6 +66,7 @@ func TestPokemonService(t *testing.T) {
 		t.Run(tt.inputName, func(t *testing.T) {
 			p := PokemonService{
 				tt.service.client,
+				tt.service.cache,
 			}
 			result, err := p.GetPokemonFromPokeApi(tt.args.pokemon)
 			if (err != nil) != tt.expectedError {

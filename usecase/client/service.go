@@ -15,10 +15,10 @@ import (
 
 type PokemonService struct {
 	*http.Client
-	cache *cache.Cache
+	cache cache.Redis
 }
 
-func NewPokemonService(cache *cache.Cache) *PokemonService {
+func NewPokemonService(cache cache.Redis) *PokemonService {
 	return &PokemonService{
 		Client: &http.Client{
 			Timeout: time.Second,
@@ -30,7 +30,8 @@ func NewPokemonService(cache *cache.Cache) *PokemonService {
 func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.ClientPokemon, error) {
 	var pokemonResult *presenter.ClientPokemon
 
-	err := p.cache.Get("pokeApi", &pokemonResult)
+	redisKey := fmt.Sprintf("pokeApi-%s", pokemon)
+	err := p.cache.Get(redisKey, pokemonResult)
 	if err == nil {
 		return pokemonResult, nil
 	}
@@ -44,7 +45,7 @@ func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Clien
 		return nil, err
 	}
 
-	isSetted, err := p.cache.Set("pokeApi", pokemonResult, 320)
+	isSetted, err := p.cache.Set("pokeApi", pokemonResult, 60)
 	if err != nil {
 		log.Println("Failed to set new cache on Redis", err)
 		return pokemonResult, nil
@@ -59,7 +60,7 @@ func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Clien
 func (p *PokemonService) GetAllResultPokemonFromPokeApi() (*presenter.Result, error) {
 	var pokemonResult *presenter.Result
 
-	err := p.cache.Get("allPokeApi", &pokemonResult)
+	err := p.cache.Get("allPokeApi", pokemonResult)
 	if err == nil {
 		return pokemonResult, nil
 	}
