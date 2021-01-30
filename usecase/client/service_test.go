@@ -1,22 +1,25 @@
 package client
 
 import (
+	"bytes"
+	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"reflect"
 	"testing"
 
 	"github.com/go-redis/redis"
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/infrastructure/cache"
-	mocks "github.com/ricardoham/pokedex-api/mocks/redis"
+	mockHttpClient "github.com/ricardoham/pokedex-api/mocks/client"
+	mockRedis "github.com/ricardoham/pokedex-api/mocks/redis"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestPokemonService(t *testing.T) {
 	type service struct {
-		client *http.Client
-		cache  cache.Redis
+		httpClient HTTPClient
+		cache      cache.Redis
+		url        string
 	}
 
 	type args struct {
@@ -41,18 +44,27 @@ func TestPokemonService(t *testing.T) {
 		{
 			inputName: "Should return a pokemon as result of GetPokemonFromPokeApi",
 			service: func() service {
-				want := "Success!"
-				httpServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-					w.WriteHeader(200)
-					w.Write([]byte(want))
-				}))
-				cache := &mocks.Redis{}
-
+				json := `{
+					"id": 1,
+					"name": "bulbasaur",
+					"sprites": {
+							"front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+					}
+			}`
+				mockBody := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+				httpRes := &http.Response{
+					StatusCode: 200,
+					Body:       mockBody,
+				}
+				httpClient := &mockHttpClient.HTTPClient{}
+				cache := &mockRedis.Redis{}
 				cache.On("Get", mock.Anything, mock.Anything).Return(redis.Nil)
+				httpClient.On("Do", mock.Anything).Return(httpRes, nil)
 				cache.On("Set", mock.Anything, mock.Anything, mock.Anything).Return(true, nil)
 				return service{
-					client: httpServer.Client(),
-					cache:  cache,
+					httpClient: httpClient,
+					cache:      cache,
+					url:        "http://localhost:8080/",
 				}
 			}(),
 			args: args{
@@ -65,8 +77,9 @@ func TestPokemonService(t *testing.T) {
 	for _, tt := range myTest {
 		t.Run(tt.inputName, func(t *testing.T) {
 			p := PokemonService{
-				tt.service.client,
+				tt.service.httpClient,
 				tt.service.cache,
+				tt.service.url,
 			}
 			result, err := p.GetPokemonFromPokeApi(tt.args.pokemon)
 			if (err != nil) != tt.expectedError {

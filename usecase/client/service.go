@@ -7,23 +7,22 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/ricardoham/pokedex-api/api/presenter"
 	"github.com/ricardoham/pokedex-api/infrastructure/cache"
 )
 
 type PokemonService struct {
-	*http.Client
-	cache cache.Redis
+	httpClient HTTPClient
+	cache      cache.Redis
+	url        string
 }
 
 func NewPokemonService(cache cache.Redis) *PokemonService {
 	return &PokemonService{
-		Client: &http.Client{
-			Timeout: time.Second,
-		},
-		cache: cache,
+		httpClient: &http.Client{},
+		cache:      cache,
+		url:        "https://pokeapi.co/api/v2/pokemon/",
 	}
 }
 
@@ -36,7 +35,7 @@ func (p *PokemonService) GetPokemonFromPokeApi(pokemon string) (*presenter.Clien
 		return pokemonResult, nil
 	}
 
-	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", strings.ToLower(pokemon)))
+	bodyResult, err := p.doRequest(fmt.Sprintf("%s%s", p.url, strings.ToLower(pokemon)))
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +64,7 @@ func (p *PokemonService) GetAllResultPokemonFromPokeApi() (*presenter.Result, er
 		return pokemonResult, nil
 	}
 
-	bodyResult, err := p.doRequest(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/"))
+	bodyResult, err := p.doRequest(fmt.Sprintf("%s", p.url))
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +93,7 @@ func (p *PokemonService) doRequest(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	res, err := p.Do(req)
+	res, err := p.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
