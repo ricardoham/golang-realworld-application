@@ -97,5 +97,10 @@ func (s *PokemonService) DeletePokemon(pokeID presenter.DeletePokemon) (int64, e
 		return 0, err
 	}
 
+	err = s.cache.Delete("pokemon")
+	if err != nil {
+		log.Println("Error to delete from redis cache ", err)
+	}
+
 	return deleteResult.DeletedCount, nil
 }
