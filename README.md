@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/ricardoham/pokedex-api.svg?style=svg)](https://circleci.com/gh/ricardoham/pokedex-api)
+
+[![GitHub license](https://img.shields.io/github/license/ricardoham/pokedex-api?style=for-the-badge)](https://github.com/ricardoham/pokedex-api/blob/main/LICENSE)
 # Pokedex Golang API
 
 ## About 📖
