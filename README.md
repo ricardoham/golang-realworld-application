@@ -1,21 +1,21 @@
 # Pokedex Golang API
 
-## About
-### API
+## About 📖
+### API 🌟
 - Using PokeApi for data source
 - Golang RestAPI using Echo as web framework routing
 - MongoDB as data base
 - Redis DB for cache data base for requests(include external request)
 - Contains a Dockerfile and docker-compose to up the all containers(Go, Mongo and Redis)
 
-### The flux
+### The flow 🔛
 This API simulates a simple flux of a PokeDex
 - User Search a Pokemon or all Pokemons.
 - Select a Pokemon.
 - Create a Section.
 - Search for all pokemons
 
-## Running the application
+## Running the application ▶
 There is a **Makefile** in the project that you can run with:
 
 Developer Mode(No Go Container, good for debug Go code)
@@ -32,7 +32,7 @@ Developer Mode(No Go Container, good for debug Go code)
  make run
 ```
 
-## cURls
+## cURls 🛠
 Get All Pokemons from PokeAPI source
 ```
 curl --location --request GET 'http://localhost:8080/v1/external/pokemons/'
