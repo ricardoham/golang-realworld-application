@@ -4,7 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/ricardoham/pokedex-api?style=for-the-badge)](https://github.com/ricardoham/pokedex-api/blob/main/LICENSE)
 ## About 📖
 ### API 🌟
-- Using PokeApi for data source
+- Using [PokeApi](https://github.com/PokeAPI/pokeapi) for data source
 - Golang RestAPI using Echo as web framework routing
 - MongoDB as data base
 - Redis DB for cache data base for requests(include external request)
