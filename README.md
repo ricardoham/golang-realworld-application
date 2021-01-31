@@ -34,6 +34,14 @@ Developer Mode(No Go Container, good for debug Go code)
  make run
 ```
 
+### Local host results:
+```
+API port: 8080
+
+MongoDB: 27017
+
+Redis: 6379
+```
 ## cURls 🛠
 Get All Pokemons from PokeAPI source
 ```
